@@ -1,0 +1,3 @@
+## 2026-05-28 - [Accessible Loading States in Single-File Apps]
+**Learning:** In projects without a framework (React/Vue), micro-UX improvements like loading states can be effectively implemented by directly manipulating `innerHTML` and using `finally` blocks in async functions to ensure UI consistency regardless of the API outcome. Combining this with `.sr-only` labels ensures both visual and screen-reader accessibility.
+**Action:** Use a utility CSS class like `.sr-only` for accessible labels and always use `try...finally` for toggling interactive element states (like buttons) to prevent them from getting stuck in a loading state on error.
