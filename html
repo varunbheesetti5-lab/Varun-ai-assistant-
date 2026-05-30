@@ -14,7 +14,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #000000;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
@@ -408,7 +408,7 @@
                 height: 98vh;
                 border-radius: 15px;
             }
-            
+
             .message-content {
                 max-width: 90%;
                 padding: 15px 18px;
@@ -438,6 +438,7 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+
     </style>
 </head>
 <body>
@@ -456,35 +457,35 @@
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
-                        
+
                         I'm your advanced AI Assistant powered by <strong>OpenAI GPT</strong>. Here's what I can do for you:<br><br>
-                        
+
                         🔥 <strong>Core Capabilities:</strong><br>
                         • <strong>Code Generation</strong> - Python, JavaScript, React, HTML/CSS, SQL, and 50+ languages<br>
                         • <strong>Code Debugging</strong> - Find and fix bugs in your code<br>
                         • <strong>Code Explanation</strong> - Understand complex algorithms and functions<br>
                         • <strong>Technical Documentation</strong> - Write READMEs, API docs, and tutorials<br>
                         • <strong>System Architecture</strong> - Design scalable applications<br><br>
-                        
+
                         ✨ <strong>Advanced Features:</strong><br>
                         • **Complete code projects** with multiple files<br>
                         • **Visual content** with images and diagrams<br>
                         • **Interactive links** to resources and documentation<br>
                         • **Real-time research** with up-to-date information<br>
                         • **Context memory** - I remember our entire conversation<br><br>
-                        
+
                         💡 <strong>Quick Start Examples:</strong><br>
                         • *"Build a complete React todo app with code"*<br>
                         • *"Explain machine learning algorithms with examples"*<br>
                         • *"Create a Python web scraper with error handling"*<br>
                         • *"Design a database schema for an e-commerce app"*<br><br>
-                        
+
                         Ready to build something amazing? <strong>What can I help you code today?</strong> 🚀
                     </div>
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite" role="status">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +494,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1" aria-label="Type your message"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message">
                     ▶
                 </button>
             </div>
@@ -531,7 +532,7 @@
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 150) + 'px';
                 sendButton.disabled = this.value.trim() === '';
-                
+
                 // Add visual feedback
                 if (this.value.trim()) {
                     sendButton.style.background = 'linear-gradient(135deg, #8b5cf6, #06b6d4)';
@@ -550,7 +551,7 @@
             });
 
             sendButton.disabled = true;
-            
+
             // Focus on input and show ready status
             setTimeout(() => {
                 messageInput.focus();
@@ -562,7 +563,7 @@
         function updateStatus(type, text) {
             statusText.textContent = text;
             statusDot.className = 'status-dot';
-            
+
             if (type === 'error') {
                 statusDot.classList.add('error');
             }
@@ -611,9 +612,9 @@
 
             const data = await response.json();
             const aiMessage = data.choices[0].message.content;
-            
+
             conversationHistory.push({ role: 'assistant', content: aiMessage });
-            
+
             // Keep conversation manageable (last 30 messages)
             if (conversationHistory.length > 31) {
                 // Keep system prompt + last 30 messages
@@ -657,26 +658,26 @@
                 const language = lang ? ` data-language="${lang}"` : '';
                 return `<pre${language}><code>${escapeHtml(code.trim())}</code></pre>`;
             });
-            
+
             // Format inline code
             text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-            
+
             // Format citations
             text = text.replace(/\[(\d+)\]/g, '<span class="citation">[$1]</span>');
-            
+
             // Format lists
             text = text.replace(/^\* (.+)$/gm, '<li>$1</li>');
             text = text.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-            
+
             // Format bold
             text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-            
+
             // Format italic
             text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-            
+
             // Format line breaks
             text = text.replace(/\n/g, '<br>');
-            
+
             return text;
         }
 
@@ -684,20 +685,21 @@
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
-            
+
             const contentDiv = document.createElement('div');
             contentDiv.className = 'message-content';
-            
+
             if (isUser) {
                 contentDiv.textContent = content;
             } else {
                 contentDiv.innerHTML = formatMessage(content);
-                
+
                 // Add copy buttons to code blocks
                 const codeBlocks = contentDiv.querySelectorAll('pre');
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -712,7 +714,8 @@
                         transition: background 0.3s ease;
                     `;
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        navigator.clipboard.writeText(codeElement ? codeElement.textContent : pre.textContent);
                         copyBtn.textContent = '✅ Copied!';
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
@@ -722,16 +725,16 @@
                     pre.appendChild(copyBtn);
                 });
             }
-            
+
             messageDiv.appendChild(contentDiv);
             messagesContainer.appendChild(messageDiv);
-            
+
             // Smooth scroll to bottom
             messagesContainer.scrollTo({
                 top: messagesContainer.scrollHeight,
                 behavior: 'smooth'
             });
-            
+
             messageCount++;
         }
 
@@ -756,7 +759,7 @@
             // Add loading state
             document.getElementById('appContainer').classList.add('loading');
             addMessage(message, true);
-            
+
             // Clear and reset input
             messageInput.value = '';
             messageInput.style.height = 'auto';
@@ -771,19 +774,19 @@
                 hideTyping();
                 addMessage(response, false);
                 updateStatus('connected', '✅ Ready');
-                
+
                 // Success feedback
                 sendButton.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 setTimeout(() => {
                     sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
                 }, 1000);
-                
+
             } catch (error) {
                 hideTyping();
                 console.error('OpenAI API Error:', error);
-                
+
                 let errorMessage = `**❌ Error occurred:**\n\n${error.message}\n\n`;
-                
+
                 if (error.message.includes('401')) {
                     errorMessage += '🔑 **Issue:** Invalid API key\n**Solution:** Check your OpenAI API key configuration';
                 } else if (error.message.includes('429')) {
@@ -793,7 +796,7 @@
                 } else {
                     errorMessage += '🔧 **Solution:** Please try again in a moment. If the issue persists, check your internet connection.';
                 }
-                
+
                 addMessage(errorMessage, false);
                 updateStatus('error', '❌ Error');
             } finally {
@@ -813,7 +816,7 @@
                     sendMessage();
                 }
             }
-            
+
             // Escape to clear input
             if (e.key === 'Escape') {
                 messageInput.value = '';
