@@ -27,6 +27,18 @@
         }
 
         /* Main App */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
         .app-container {
             width: 95vw;
             max-width: 1200px;
@@ -484,7 +496,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite" role="status">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +505,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Type your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message">
                     ▶
                 </button>
             </div>
@@ -505,7 +518,7 @@
     <script>
         // API Configuration with your key
         const CONFIG = {
-            apiKey: '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',
+            apiKey: 'YOUR_OPENROUTER_API_KEY',
             apiEndpoint: 'https://openrouter.ai/api/v1/chat/completions',
             model: 'openai/gpt-3.5-turbo',
             maxTokens: 3000,
@@ -698,6 +711,7 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -714,8 +728,10 @@
                     copyBtn.onclick = () => {
                         navigator.clipboard.writeText(pre.textContent);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied!');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
@@ -765,6 +781,7 @@
 
             showTyping();
             updateStatus('thinking', '🧠 Processing...');
+            sendButton.innerHTML = '⌛';
 
             try {
                 const response = await callOpenAI(message);
@@ -797,6 +814,7 @@
                 addMessage(errorMessage, false);
                 updateStatus('error', '❌ Error');
             } finally {
+                sendButton.innerHTML = '▶';
                 document.getElementById('appContainer').classList.remove('loading');
                 messageInput.focus();
             }
