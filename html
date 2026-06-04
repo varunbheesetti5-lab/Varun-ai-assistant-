@@ -438,6 +438,18 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 </head>
 <body>
@@ -484,7 +496,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" role="status" aria-live="polite" id="typingIndicator">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +505,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Write your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button aria-label="Send message" class="send-button" id="sendButton" onclick="sendMessage()">
                     ▶
                 </button>
             </div>
@@ -505,7 +518,7 @@
     <script>
         // API Configuration with your key
         const CONFIG = {
-            apiKey: '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',
+            apiKey: 'YOUR_OPENROUTER_API_KEY_HERE',
             apiEndpoint: 'https://openrouter.ai/api/v1/chat/completions',
             model: 'openai/gpt-3.5-turbo',
             maxTokens: 3000,
@@ -698,6 +711,7 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -712,10 +726,12 @@
                         transition: background 0.3s ease;
                     `;
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        navigator.clipboard.writeText(pre.querySelector('code').textContent);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Code copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
