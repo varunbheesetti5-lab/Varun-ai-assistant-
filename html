@@ -438,6 +438,19 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+
+        /* Screen reader only utility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -452,7 +465,7 @@
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -484,7 +497,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite" role="status">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +506,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <label for="messageInput" class="sr-only">Message</label><textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message">
                     ▶
                 </button>
             </div>
@@ -698,6 +711,7 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -712,10 +726,24 @@
                         transition: background 0.3s ease;
                     `;
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        let textToCopyContent = '';
+
+                        if (codeElement) {
+                            textToCopyContent = codeElement.textContent;
+                        } else {
+                            // Fallback: clone and remove buttons to get clean text
+                            const clone = pre.cloneNode(true);
+                            clone.querySelectorAll('button').forEach(btn => btn.remove());
+                            textToCopyContent = clone.textContent;
+                        }
+
+                        navigator.clipboard.writeText(textToCopyContent);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Code copied');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
@@ -761,6 +789,7 @@
             messageInput.value = '';
             messageInput.style.height = 'auto';
             sendButton.disabled = true;
+            sendButton.innerHTML = '⌛';
             sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
 
             showTyping();
@@ -798,6 +827,7 @@
                 updateStatus('error', '❌ Error');
             } finally {
                 document.getElementById('appContainer').classList.remove('loading');
+                sendButton.innerHTML = '▶';
                 messageInput.focus();
             }
         }
