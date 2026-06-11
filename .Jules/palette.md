@@ -1,0 +1,3 @@
+## 2026-06-11 - [Accessibility and Interaction Feedbacks]
+**Learning:** Using Python scripts for text replacement is more robust than Git merge diffs for the CRLF-encoded 'html' file, as it avoids issues with multiline blocks and hidden characters. Visual feedback for asynchronous actions (like sending a message) should be implemented by changing button 'innerHTML' to a loading symbol (e.g., '⌛') and restoring it in the 'finally' block.
+**Action:** Always use 'try...finally' to ensure UI states are reset correctly, and use programmatic updates to 'aria-label' to provide feedback to assistive technology users.
