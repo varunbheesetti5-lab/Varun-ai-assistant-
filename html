@@ -438,6 +438,18 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -452,7 +464,7 @@
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" role="log" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -493,9 +505,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <label for="messageInput" class="sr-only">Type your message</label><textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -762,6 +774,8 @@
             messageInput.style.height = 'auto';
             sendButton.disabled = true;
             sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
+            sendButton.innerHTML = '⌛';
+            sendButton.setAttribute('aria-label', 'AI is thinking...');
 
             showTyping();
             updateStatus('thinking', '🧠 Processing...');
@@ -775,7 +789,9 @@
                 // Success feedback
                 sendButton.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 setTimeout(() => {
-                    sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
+            sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
+            sendButton.innerHTML = '⌛';
+            sendButton.setAttribute('aria-label', 'AI is thinking...');
                 }, 1000);
                 
             } catch (error) {
@@ -798,6 +814,8 @@
                 updateStatus('error', '❌ Error');
             } finally {
                 document.getElementById('appContainer').classList.remove('loading');
+                sendButton.innerHTML = '▶';
+                sendButton.setAttribute('aria-label', 'Send message');
                 messageInput.focus();
             }
         }
