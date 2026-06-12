@@ -427,6 +427,18 @@
             }
         }
 
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
         /* Loading animation for better UX */
         .loading {
             opacity: 0.7;
@@ -452,7 +464,7 @@
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" role="log" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -493,9 +505,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Type your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -711,11 +724,19 @@
                         cursor: pointer;
                         transition: background 0.3s ease;
                     `;
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code to clipboard');
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const tempPre = pre.cloneNode(true);
+                        const btn = tempPre.querySelector('button');
+                        if (btn) btn.remove();
+                        navigator.clipboard.writeText(tempPre.textContent.trim());
+
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
