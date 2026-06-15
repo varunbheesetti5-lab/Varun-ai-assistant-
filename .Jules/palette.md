@@ -1,0 +1,3 @@
+## 2025-05-23 - Enhanced Accessibility for Single-Page AI Interfaces
+**Learning:** In a dynamic single-page application like an AI chat interface, simply adding placeholders and icons is insufficient for accessibility. Assistive technologies require semantic markers like `role="log"` and `aria-live="polite"` to announce content updates. Providing hidden labels via `.sr-only` and dynamic ARIA updates on interaction buttons (like Copy/Send) creates a much more inclusive experience without altering the visual design for sighted users.
+**Action:** Always include a `.sr-only` utility class in standalone HTML projects to provide necessary context for screen readers. Use `aria-live` regions for sequential logs or news feeds.
