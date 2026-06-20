@@ -1,0 +1,3 @@
+## 2025-05-14 - Robust Copy-to-Clipboard for Code Blocks
+**Learning:** When injecting interactive elements like "Copy" buttons into content containers (e.g., `<pre>` tags), using `element.textContent` on the container will include the button's own text in the clipboard. Additionally, icon-only buttons need both `aria-label` and `title` for full accessibility and visual discovery.
+**Action:** Always target the specific data element (like `<code>`) for copying. Use `aria-label` and `title` for buttons and update them dynamically to provide immediate feedback to both screen reader and mouse users.
