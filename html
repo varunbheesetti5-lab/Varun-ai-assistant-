@@ -438,6 +438,17 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -452,7 +463,7 @@
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" role="log" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -493,9 +504,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Type your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -697,7 +709,13 @@
                 const codeBlocks = contentDiv.querySelectorAll('pre');
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
-                    copyBtn.textContent = '📋 Copy';
+                    const copyText = '📋 Copy';
+                    const copiedText = '✅ Copied!';
+
+                    copyBtn.textContent = copyText;
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code to clipboard');
+
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -709,15 +727,26 @@
                         border-radius: 5px;
                         font-size: 12px;
                         cursor: pointer;
-                        transition: background 0.3s ease;
+                        transition: all 0.3s ease;
                     `;
+
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
-                        copyBtn.textContent = '✅ Copied!';
-                        setTimeout(() => {
-                            copyBtn.textContent = '📋 Copy';
-                        }, 2000);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.textContent : pre.textContent;
+
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            copyBtn.textContent = copiedText;
+                            copyBtn.setAttribute('aria-label', 'Code copied!');
+                            copyBtn.setAttribute('title', 'Code copied!');
+
+                            setTimeout(() => {
+                                copyBtn.textContent = copyText;
+                                copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                                copyBtn.setAttribute('title', 'Copy code to clipboard');
+                            }, 2000);
+                        });
                     };
+
                     pre.style.position = 'relative';
                     pre.appendChild(copyBtn);
                 });
