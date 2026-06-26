@@ -1,0 +1,3 @@
+## 2025-05-14 - Accessible Dynamic Feedback
+**Learning:** For dynamic elements like 'Copy' buttons, updating the `aria-label` and `title` attributes in tandem with visual text changes (e.g., 'Copy' to 'Copied!') ensures that assistive technology users receive immediate feedback on successful actions. Additionally, ensuring that clipboard operations target only the `<code>` content within `<pre>` blocks prevents UI text (like the button label itself) from being accidentally copied.
+**Action:** Always programmatically update `aria-label` for dynamic state changes and use precise DOM selection (`pre.querySelector('code')`) for clipboard content extraction.
