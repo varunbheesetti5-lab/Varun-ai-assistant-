@@ -1,0 +1,3 @@
+## 2024-06-29 - [Accessibility and Robust Code Copying]
+**Learning:** When interactive elements (like a "Copy" button) are injected into a container (like `<pre>`), using `container.textContent` for functionality will inadvertently include the text of the interactive element itself. Always target the specific content element (e.g., `<code>`) to ensure data integrity. Additionally, icon-only buttons require both `aria-label` for screen readers and `title` for visual tooltips to ensure universal accessibility.
+**Action:** Use specific selectors (e.g., `pre > code`) instead of broad ones (`pre`) when extracting text for features like copy-to-clipboard, and always pair `aria-label` with `title` on icon buttons.
