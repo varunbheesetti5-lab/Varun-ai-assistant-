@@ -433,6 +433,20 @@
             pointer-events: none;
         }
 
+
+        /* Accessibility utility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
         /* Welcome message special styling */
         .welcome-message {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
@@ -445,7 +459,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -493,9 +507,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Ask me to code anything...</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -711,11 +726,19 @@
                         cursor: pointer;
                         transition: background 0.3s ease;
                     `;
+                    copyBtn.setAttribute('aria-label', 'Copy code');
+                    copyBtn.setAttribute('title', 'Copy code');
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.textContent : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied!');
+                        copyBtn.setAttribute('title', 'Copied!');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code');
+                            copyBtn.setAttribute('title', 'Copy code');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
