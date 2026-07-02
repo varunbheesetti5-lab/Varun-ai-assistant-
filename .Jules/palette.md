@@ -1,0 +1,3 @@
+## 2025-05-14 - Robust Copy-to-Clipboard in AI Interfaces
+**Learning:** When implementing copy-to-clipboard functionality for code blocks, using simple `pre.textContent` often accidentally captures UI elements like "Copy" buttons injected into the block. Relying on `pre.querySelector('code').textContent` is more precise but fragile if the markdown renderer varies.
+**Action:** Always use robust selection like `pre.querySelector('code')?.textContent || pre.textContent` and ensure dynamic UI elements (like buttons) are updated with both `aria-label` and `title` for consistent accessibility feedback.
