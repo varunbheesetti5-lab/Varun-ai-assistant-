@@ -1,0 +1,3 @@
+## 2026-07-03 - Robust Code Copy Accessibility
+**Learning:** In single-file applications where interactive elements are dynamically injected into code blocks, using `element.textContent` on a container can accidentally include the text of the UI elements themselves (like "Copy" button labels) in the clipboard. Additionally, dynamic feedback for screen readers must be handled by updating ARIA labels in sync with visual changes.
+**Action:** Always target the specific `<code>` element within a `<pre>` block for clipboard operations and programmatically update `aria-label` and `title` attributes when providing interaction feedback.
