@@ -438,6 +438,18 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
         }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -447,12 +459,12 @@
             <h1>Varun AI Assistant</h1>
             <div class="api-status" id="apiStatus">
                 <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">Connected</span>
+                <span id="statusText" aria-live="polite">Connected</span>
             </div>
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" role="log" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -484,7 +496,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +505,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -698,6 +711,8 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -714,8 +729,12 @@
                     copyBtn.onclick = () => {
                         navigator.clipboard.writeText(pre.textContent);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied to clipboard');
+                        copyBtn.setAttribute('title', 'Copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                            copyBtn.setAttribute('title', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
