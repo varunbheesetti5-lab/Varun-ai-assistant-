@@ -1,0 +1,3 @@
+## 2026-07-07 - Accessible Dynamic Feedback Pattern
+**Learning:** For dynamically generated interactive elements like 'Copy' buttons in a single-file application, ensuring accessibility requires programmatically setting `aria-label` and `title` attributes both at creation and during state transitions (e.g., from 'Copy' to 'Copied!'). This provides consistent feedback for both screen reader users and mouse users via tooltips.
+**Action:** Always include ARIA attributes and title tooltips when generating interactive DOM elements via JavaScript, and update them dynamically to reflect state changes.
