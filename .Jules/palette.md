@@ -1,0 +1,3 @@
+## 2026-07-17 - Accessible Micro-UX for Code Copy and Assistive Technology
+**Learning:** Icon-only actions and state changes (like copying code blocks) are invisible to screen readers unless proper ARIA roles (`role="log"`, `aria-live="polite"`) and descriptive dynamically updated attributes (`aria-label`, `title`) are implemented. Clipboard copying from a `<pre>` element must target the nested `<code>` tag specifically to avoid capturing sibling UI elements like copy buttons.
+**Action:** Always wrap visual-only helpers in `.sr-only` labels, assign matching `aria-label` and `title` to icon-only controls, and programmatically update assistive text when dynamic action states change.
