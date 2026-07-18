@@ -1,0 +1,3 @@
+## 2026-07-18 - [Dynamic ARIA Roles & Accessible Clipboard Feedback]
+**Learning:** Adding 'aria-live="polite"' and 'role="log"' on active chat logs ensures that assistive technologies seamlessly announce new AI responses sequentially without disrupting user flow. Furthermore, when interactive components like copy buttons dynamically update their text, updating both the 'aria-label' and the 'title' attribute simultaneously provides consistent feedback for both screen-reader and mouse-hover users.
+**Action:** When designing assistant interfaces, group messages in a element marked with role="log" and aria-live="polite", and ensure copy/paste feedback alters the label and tooltip programmatically before reverting to its base state.
