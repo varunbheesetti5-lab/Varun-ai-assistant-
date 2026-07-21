@@ -445,14 +445,14 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite" role="status">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
         </div>
 
         <div class="chat-container">
-            <div class="messages" id="messages">
+            <div class="messages" id="messages" role="log" aria-live="polite">
                 <div class="message ai">
                     <div class="message-content welcome-message">
                         🎉 <strong>Welcome to Varun AI Assistant!</strong><br><br>
@@ -484,7 +484,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -495,7 +495,7 @@
                 <div class="input-container">
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -698,6 +698,8 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code block');
+                    copyBtn.setAttribute('title', 'Copy code block');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -712,10 +714,16 @@
                         transition: background 0.3s ease;
                     `;
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.innerText : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied to clipboard');
+                        copyBtn.setAttribute('title', 'Copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code block');
+                            copyBtn.setAttribute('title', 'Copy code block');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
