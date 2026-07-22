@@ -1,0 +1,3 @@
+## 2024-07-22 - Accessibility in AI Chat Logs and Clean Code Copier
+**Learning:** For interactive screen readers, chat interface containers benefit immensely from having `role="log"` and `aria-live="polite"` to dynamically announce incoming AI messages sequentially. Furthermore, when copying multi-line code inside `<pre><code>` blocks, using `pre.textContent` can accidentally capture UI elements like dynamic copy buttons; targeting the nested `<code>` element with `.innerText` robustly preserves actual spacing and excludes sibling interactive artifacts.
+**Action:** Always add `role="log"` and `aria-live="polite"` to dynamic message streams, and target the code block inner text precisely instead of the entire pre-container content.
