@@ -1,0 +1,3 @@
+## 2026-07-24 - AI Assistant Real-Time Interaction Accessibility
+**Learning:** Adding dynamic code snippets and real-time status updates in multi-turn AI chat interfaces requires proactive ARIA role mapping and keyboard focus visibility. If dynamic elements like "Copy" buttons lack explicit accessibility cues, assistive technologies cannot relay the interaction state (e.g., transition from "Copy" to "Copied!").
+**Action:** Always map appropriate roles (`role="status"`, `role="log"`) and reactive properties (`aria-live="polite"`, dynamic `aria-label`/`title`) on dynamic items and their status indicators to make screen reader and keyboard-only experiences seamless.
