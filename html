@@ -245,6 +245,16 @@
             background: rgba(0, 0, 0, 0.4);
         }
 
+        #messageInput:focus-visible {
+            outline: 2px solid #8b5cf6;
+            outline-offset: 2px;
+        }
+
+        .send-button:focus-visible {
+            outline: 2px solid #06b6d4;
+            outline-offset: 3px;
+        }
+
         #messageInput::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
@@ -495,7 +505,7 @@
                 <div class="input-container">
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
