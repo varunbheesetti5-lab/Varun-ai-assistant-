@@ -1,0 +1,3 @@
+## 2025-08-01 - [Interactive Visual Cue Context]
+**Learning:** In highly customized dark-themed single-page assistant UIs, generic standard focus indicators can ruin the aesthetic and result in designers disabling them completely with 'outline: none'. Adding 'focus-visible' properties with custom high-contrast offsets and colors maintains visual aesthetic for mouse users while keeping absolute compliance for keyboard navigators.
+**Action:** When working on styled custom layouts, never settle for 'outline: none' without a 'focus-visible' fallback that matches the page's secondary or accent color palettes.
