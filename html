@@ -495,7 +495,7 @@
                 <div class="input-container">
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -698,6 +698,8 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code block to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code block');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -709,14 +711,43 @@
                         border-radius: 5px;
                         font-size: 12px;
                         cursor: pointer;
-                        transition: background 0.3s ease;
+                        transition: all 0.3s ease;
+                        outline: none;
                     `;
+
+                    // Add interactive focus and hover styling dynamically for superb accessibility & visual polish
+                    copyBtn.onmouseenter = () => {
+                        copyBtn.style.background = 'rgba(139, 92, 246, 1)';
+                        copyBtn.style.transform = 'scale(1.05)';
+                    };
+                    copyBtn.onmouseleave = () => {
+                        copyBtn.style.background = 'rgba(139, 92, 246, 0.8)';
+                        copyBtn.style.transform = 'scale(1)';
+                    };
+                    copyBtn.onfocus = () => {
+                        copyBtn.style.background = 'rgba(139, 92, 246, 1)';
+                        copyBtn.style.boxShadow = '0 0 0 2px #06b6d4';
+                    };
+                    copyBtn.onblur = () => {
+                        copyBtn.style.background = 'rgba(139, 92, 246, 0.8)';
+                        copyBtn.style.boxShadow = 'none';
+                    };
+
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
-                        copyBtn.textContent = '✅ Copied!';
-                        setTimeout(() => {
-                            copyBtn.textContent = '📋 Copy';
-                        }, 2000);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.innerText : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            copyBtn.textContent = '✅ Copied!';
+                            copyBtn.setAttribute('aria-label', 'Copied to clipboard!');
+                            copyBtn.setAttribute('title', 'Copied to clipboard!');
+                            setTimeout(() => {
+                                copyBtn.textContent = '📋 Copy';
+                                copyBtn.setAttribute('aria-label', 'Copy code block to clipboard');
+                                copyBtn.setAttribute('title', 'Copy code block');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy text: ', err);
+                        });
                     };
                     pre.style.position = 'relative';
                     pre.appendChild(copyBtn);
