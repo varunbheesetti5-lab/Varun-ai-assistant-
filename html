@@ -433,6 +433,53 @@
             pointer-events: none;
         }
 
+
+        /* Accessibility and focus styles */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        :focus-visible {
+            outline: 3px solid #8b5cf6 !important;
+            outline-offset: 2px !important;
+        }
+
+        .message-content a:focus-visible {
+            outline: 3px solid #06b6d4 !important;
+            outline-offset: 2px !important;
+        }
+
+        .copy-btn:focus-visible {
+            outline: 2px solid #ffffff !important;
+            outline-offset: 1px !important;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(139, 92, 246, 0.8);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(139, 92, 246, 1);
+        }
+
         /* Welcome message special styling */
         .welcome-message {
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.1));
@@ -445,7 +492,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -493,9 +540,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Type your message</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -697,25 +745,22 @@
                 const codeBlocks = contentDiv.querySelectorAll('pre');
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
                     copyBtn.textContent = '📋 Copy';
-                    copyBtn.style.cssText = `
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        background: rgba(139, 92, 246, 0.8);
-                        border: none;
-                        color: white;
-                        padding: 5px 10px;
-                        border-radius: 5px;
-                        font-size: 12px;
-                        cursor: pointer;
-                        transition: background 0.3s ease;
-                    `;
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code to clipboard');
+
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.innerText : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied to clipboard');
+                        copyBtn.setAttribute('title', 'Copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                            copyBtn.setAttribute('title', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
