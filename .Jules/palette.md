@@ -1,0 +1,5 @@
+# Palette's Journal
+
+## 2025-08-07 - Dynamic Clipboard Text Extraction and Live Regions in Static SPAs
+**Learning:** In a single-file application where elements are appended dynamically, code block 'Copy' buttons that read `pre.textContent` directly will erroneously include the button text (e.g., '📋 Copy' and '✅ Copied!') in the user's clipboard. Targeting the inner `code` element specifically or excluding siblings via robust JavaScript selection prevents clipboard pollution. Additionally, status elements like connection dots require a container with an explicit `aria-live="polite"` attribute to ensure screen readers announce status transitions correctly on initial load and during subsequent updates.
+**Action:** When adding clipboard or copy features, always target the specific child code element (e.g., `pre.querySelector('code')`) rather than the container parent. For dynamic state indicators, always wrap them in a container marked with standard live region properties to provide seamless assistive device announcements without disrupting interaction.
