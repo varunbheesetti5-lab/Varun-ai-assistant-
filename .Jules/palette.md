@@ -1,0 +1,5 @@
+# Palette's Journal - Critical Learnings Only
+
+## 2026-08-11 - [Enhancing Code Block Clipboard Reliability and Dynamic Assistive Announcements]
+**Learning:** In a single-file custom dynamic interface, appending a dynamic Copy button to a `<pre>` block can corrupt clipboard reliability if `pre.textContent` is used, as it copies the button's own text ("📋 Copy" / "✅ Copied!") into the user's clipboard. Targeting the nested `<code>` element preserves pristine code content. Additionally, screen readers require explicit `aria-live="polite"` on real-time interactive areas like connection status dots and AI typing indicators, and visible focus rings (`:focus-visible`) for icon-only buttons to navigate smoothly.
+**Action:** Always target code-exclusive child elements (such as `<code>` inside `<pre>`) when implementing clipboard logic, design distinct `:focus-visible` states for interactive items, and include ARIA labels, matching visible tooltips (`title` attribute), and `aria-live` regions for dynamic elements.
