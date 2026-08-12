@@ -1,0 +1,3 @@
+## 2024-08-12 - [Accessible Copier & Dynamic Attributes]
+**Learning:** Dynamic text/visual feedback elements (like Copy/Copied buttons) are often inaccessible to screen readers if they only update inner text without updating ARIA/title attributes. Additionally, using standard `textContent` on container tags (like `pre`) to extract text for copying can accidentally include sibling interactive buttons inside the copied string, causing poor user experience.
+**Action:** Always bind/set initial `aria-label` and `title` attributes on interactive icon-only/copy buttons, update them dynamically when user interaction updates their states, and use precise innerText extraction targeting only the actual nested `<code>` tag to cleanly retrieve pure code block text.
