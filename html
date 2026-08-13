@@ -278,6 +278,19 @@
             box-shadow: none;
         }
 
+        /* Utility for screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
         /* Enhanced Code Blocks */
         pre {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -290,6 +303,30 @@
             border: 1px solid rgba(139, 92, 246, 0.3);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             position: relative;
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(139, 92, 246, 0.8);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .copy-code-btn:hover {
+            background: rgba(139, 92, 246, 1);
+            transform: scale(1.05);
+        }
+
+        .copy-code-btn:focus-visible {
+            outline: 2px solid #06b6d4;
+            outline-offset: 2px;
         }
 
         pre::before {
@@ -493,9 +530,10 @@
 
             <div class="input-area">
                 <div class="input-container">
+                    <label for="messageInput" class="sr-only">Type your message to the AI Assistant</label>
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -697,25 +735,22 @@
                 const codeBlocks = contentDiv.querySelectorAll('pre');
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
+                    copyBtn.type = 'button';
+                    copyBtn.className = 'copy-code-btn';
                     copyBtn.textContent = '📋 Copy';
-                    copyBtn.style.cssText = `
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        background: rgba(139, 92, 246, 0.8);
-                        border: none;
-                        color: white;
-                        padding: 5px 10px;
-                        border-radius: 5px;
-                        font-size: 12px;
-                        cursor: pointer;
-                        transition: background 0.3s ease;
-                    `;
+                    copyBtn.setAttribute('aria-label', 'Copy code block');
+                    copyBtn.setAttribute('title', 'Copy code block');
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? codeElement.innerText : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied!');
+                        copyBtn.setAttribute('title', 'Copied!');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code block');
+                            copyBtn.setAttribute('title', 'Copy code block');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
