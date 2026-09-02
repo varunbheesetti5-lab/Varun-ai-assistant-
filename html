@@ -278,6 +278,11 @@
             box-shadow: none;
         }
 
+        .send-button:focus-visible {
+            outline: 2px solid #8b5cf6;
+            outline-offset: 2px;
+        }
+
         /* Enhanced Code Blocks */
         pre {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -445,7 +450,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -493,9 +498,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" aria-label="Message prompt" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" aria-label="Send message" title="Send message" onclick="sendMessage()">
                     ▶
                 </button>
             </div>
