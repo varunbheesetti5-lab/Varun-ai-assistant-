@@ -493,9 +493,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" aria-label="Message prompt" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" aria-label="Send message" title="Send message" onclick="sendMessage()">
                     ▶
                 </button>
             </div>
@@ -698,6 +698,8 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.setAttribute('title', 'Copy code to clipboard');
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -714,8 +716,12 @@
                     copyBtn.onclick = () => {
                         navigator.clipboard.writeText(pre.textContent);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied code to clipboard');
+                        copyBtn.setAttribute('title', 'Copied code to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                            copyBtn.setAttribute('title', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
