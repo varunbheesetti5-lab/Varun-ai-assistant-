@@ -271,6 +271,11 @@
             box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
         }
 
+        .send-button:focus-visible {
+            outline: 2px solid #06b6d4;
+            outline-offset: 2px;
+        }
+
         .send-button:disabled {
             background: rgba(255, 255, 255, 0.1);
             cursor: not-allowed;
@@ -445,7 +450,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" role="status" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -493,9 +498,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1" aria-label="Message input"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -711,11 +716,17 @@
                         cursor: pointer;
                         transition: background 0.3s ease;
                     `;
+                    copyBtn.type = 'button';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeEl = pre.querySelector('code');
+                        const codeText = codeEl ? codeEl.innerText : pre.innerText;
+                        navigator.clipboard.writeText(codeText);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Copied to clipboard');
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
                         }, 2000);
                     };
                     pre.style.position = 'relative';
