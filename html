@@ -493,10 +493,10 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" aria-label="Send message" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
-                    ▶
+                <button class="send-button" id="sendButton" aria-label="Send message" title="Send message" onclick="sendMessage()">
+                    <span aria-hidden="true">▶</span>
                 </button>
             </div>
         </div>
@@ -549,7 +549,7 @@
                 }
             });
 
-            sendButton.disabled = true;
+            messageInput.dispatchEvent(new Event('input'));
             
             // Focus on input and show ready status
             setTimeout(() => {
@@ -760,7 +760,7 @@
             // Clear and reset input
             messageInput.value = '';
             messageInput.style.height = 'auto';
-            sendButton.disabled = true;
+            messageInput.dispatchEvent(new Event('input'));
             sendButton.style.background = 'rgba(255, 255, 255, 0.1)';
 
             showTyping();
@@ -818,7 +818,7 @@
             if (e.key === 'Escape') {
                 messageInput.value = '';
                 messageInput.style.height = 'auto';
-                sendButton.disabled = true;
+                messageInput.dispatchEvent(new Event('input'));
                 messageInput.focus();
             }
         });
