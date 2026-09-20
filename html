@@ -445,7 +445,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -484,7 +484,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -495,7 +495,7 @@
                 <div class="input-container">
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" aria-label="Send message" title="Send message" onclick="sendMessage()">
                     ▶
                 </button>
             </div>
@@ -548,6 +548,9 @@
                     }
                 }
             });
+
+            // Initial state sync
+            messageInput.dispatchEvent(new Event('input'));
 
             sendButton.disabled = true;
             
