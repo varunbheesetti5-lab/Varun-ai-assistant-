@@ -445,7 +445,7 @@
     <div class="app-container" id="appContainer">
         <div class="header">
             <h1>Varun AI Assistant</h1>
-            <div class="api-status" id="apiStatus">
+            <div class="api-status" id="apiStatus" aria-live="polite">
                 <span class="status-dot" id="statusDot"></span>
                 <span id="statusText">Connected</span>
             </div>
@@ -484,7 +484,7 @@
                 </div>
             </div>
 
-            <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-indicator" id="typingIndicator" aria-live="polite">
                 🤖 AI is thinking
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -493,9 +493,9 @@
 
             <div class="input-area">
                 <div class="input-container">
-                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
+                    <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1" aria-label="Message prompt"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
@@ -698,6 +698,8 @@
                 codeBlocks.forEach(pre => {
                     const copyBtn = document.createElement('button');
                     copyBtn.textContent = '📋 Copy';
+                    copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                    copyBtn.title = 'Copy code to clipboard';
                     copyBtn.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -712,10 +714,16 @@
                         transition: background 0.3s ease;
                     `;
                     copyBtn.onclick = () => {
-                        navigator.clipboard.writeText(pre.textContent);
+                        const codeElement = pre.querySelector('code');
+                        const textToCopy = codeElement ? (codeElement.innerText || codeElement.textContent) : pre.textContent;
+                        navigator.clipboard.writeText(textToCopy);
                         copyBtn.textContent = '✅ Copied!';
+                        copyBtn.setAttribute('aria-label', 'Code copied to clipboard');
+                        copyBtn.title = 'Code copied to clipboard';
                         setTimeout(() => {
                             copyBtn.textContent = '📋 Copy';
+                            copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
+                            copyBtn.title = 'Copy code to clipboard';
                         }, 2000);
                     };
                     pre.style.position = 'relative';
