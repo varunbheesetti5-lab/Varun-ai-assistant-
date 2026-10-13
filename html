@@ -271,6 +271,11 @@
             box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
         }
 
+        .send-button:focus-visible {
+            outline: 2px solid #8b5cf6;
+            outline-offset: 3px;
+        }
+
         .send-button:disabled {
             background: rgba(255, 255, 255, 0.1);
             cursor: not-allowed;
@@ -495,7 +500,7 @@
                 <div class="input-container">
                     <textarea id="messageInput" placeholder="Ask me to code anything..." rows="1"></textarea>
                 </div>
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                <button class="send-button" id="sendButton" onclick="sendMessage()" aria-label="Send message" title="Send message">
                     ▶
                 </button>
             </div>
