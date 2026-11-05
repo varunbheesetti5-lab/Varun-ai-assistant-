@@ -1,0 +1,3 @@
+## 2025-11-05 - Accessible Live Regions and Icon Controls in Standalone Chat UIs
+**Learning:** In minimalist single-page chat applications, icon-only buttons (such as send arrows) and dynamic status indicators (connection status dots and typing animations) frequently omit accessible labels and live region announcements, preventing screen reader users from understanding available actions or ongoing async states.
+**Action:** Always provide explicit `aria-label` and `title` on icon-only buttons, label chat input textareas, and designate asynchronous status elements with `role="status"` and `aria-live="polite"`.
