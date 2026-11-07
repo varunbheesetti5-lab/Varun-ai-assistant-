@@ -1,0 +1,3 @@
+## 2025-12-09 - Accessible & Clean Code Snippet Copy Pattern
+**Learning:** Appending copy buttons directly as child nodes inside `<pre>` tags causes naive `pre.textContent` clipboard copies to capture the button text ("📋 Copy") alongside code content. Additionally, emoji-only copy buttons lack accessible screen reader announcements and keyboard focus states unless explicitly wired with `aria-label`, `title`, and `:focus-visible` styles.
+**Action:** When creating copy buttons inside `<pre>` elements, target the inner `<code>` element via `pre.querySelector('code')?.innerText || pre.textContent` to isolate code text, and synchronize dynamic state feedback across `textContent`, `aria-label`, and `title`.
